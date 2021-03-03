@@ -1,14 +1,25 @@
-package pl.klobut.take_credit.entiti;
+package pl.klobut.take_credit.domain.entities;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import pl.klobut.take_credit.domain.models.Customer;
+import pl.klobut.take_credit.domain.models.Product;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Credit {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "credits")
+public class CreditEntity implements Serializable {
   //  private static int creditIdCounter = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,22 +29,14 @@ public class Credit {
     private String creditName;
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "creditId")
-    private Set<Customer> customers= new HashSet<Customer>();
+            mappedBy = "credit")
+    private List<CustomerEntity> customers= new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "creditId")
-    private Set<Product> products= new HashSet<Product>();
+            mappedBy = "credit")
+    private List<ProductEntity> products= new ArrayList<>();
 
-    public Credit() {
-    }
-
-    public Credit(String creditName, Set<Customer> customers, Set<Product> products) {
-        this.creditName = creditName;
-        this.customers = customers;
-        this.products = products;
-    }
 
     public Long getId() {
         return id;
@@ -51,19 +54,19 @@ public class Credit {
         this.creditName = creditName;
     }
 
-    public Set<Customer> getCustomers() {
+    public List<CustomerEntity> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Set<Customer> customers) {
+    public void setCustomers(List<CustomerEntity> customers) {
         this.customers = customers;
     }
 
-    public Set<Product> getProducts() {
+    public List<ProductEntity> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(List<ProductEntity> products) {
         this.products = products;
     }
 }

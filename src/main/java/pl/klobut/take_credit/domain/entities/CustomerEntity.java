@@ -1,39 +1,38 @@
-package pl.klobut.take_credit.entiti;
+package pl.klobut.take_credit.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import pl.klobut.take_credit.domain.entities.CreditEntity;
+import pl.klobut.take_credit.validators.ValidPESEL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 @Entity
-public class Customer {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "customers")
+public class CustomerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_id", nullable = false, referencedColumnName="id")
-    private Credit creditId;
+    @JoinColumn(nullable = false, name = "credit_id")
+    private CreditEntity credit;
     @NotNull
     private String firstname;
     @NotNull
     private String surname;
     @NotNull
-    @Column(unique=true)
-    private Long pesel;
-
-    public Customer() {
-    }
-
-    public Customer(String firstname, String surname, Long pesel) {
-        this.firstname = firstname;
-        this.surname = surname;
-        this.pesel = pesel;
-    }
+    @ValidPESEL
+    @Pattern(regexp = "[0-9]*")
+    private String pesel;
 
     public Long getId() {
         return id;
@@ -43,12 +42,12 @@ public class Customer {
         this.id = id;
     }
 
-    public Credit getCreditId() {
-        return creditId;
+    public CreditEntity getCredit() {
+        return credit;
     }
 
-    public void setCreditId(Credit creditId) {
-        this.creditId = creditId;
+    public void setCredit(CreditEntity credit) {
+        this.credit = credit;
     }
 
     public String getFirstname() {
@@ -67,11 +66,11 @@ public class Customer {
         this.surname = surname;
     }
 
-    public Long getPesel() {
+    public String getPesel() {
         return pesel;
     }
 
-    public void setPesel(Long pesel) {
+    public void setPesel(String pesel) {
         this.pesel = pesel;
     }
 }
