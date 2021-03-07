@@ -84,6 +84,7 @@ public class CreditControllerTest {
                 .build());
         creditList.add(Credit.builder()
                 .creditName("kkk/3/2021")
+
                 .build());
         Mockito.when(creditService.getAllCredits()).thenReturn(creditList);
 

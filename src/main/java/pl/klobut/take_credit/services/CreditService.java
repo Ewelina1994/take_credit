@@ -54,7 +54,7 @@ public class CreditService {
         //add credit to database
         CreditEntity creditId = saveAndGetNrCredit(credit);
         //send list Customers to serviceCustomer
-        customerService.addNewCustomers(credit.getCustomers(), creditId);
+        customerService.addNewCustomers(credit.getCustomers(), (List<CreditEntity>)creditId);
         productService.addNewProducts(credit.getProducts(), creditId);
         return creditId;
     }

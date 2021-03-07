@@ -4,15 +4,10 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import pl.klobut.take_credit.domain.models.Customer;
-import pl.klobut.take_credit.domain.models.Product;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -20,23 +15,38 @@ import java.util.Set;
 @Builder
 @Table(name = "credits")
 public class CreditEntity implements Serializable {
-  //  private static int creditIdCounter = 0;
+    //  private static int creditIdCounter = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(unique=true)
+    @Column(unique = true)
     private String creditName;
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "credit")
-    private List<CustomerEntity> customers= new ArrayList<>();
+    @ManyToMany()
+    @JoinTable(
+            name = "credit_customer",
+            joinColumns = @JoinColumn(name = "credit_id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id"))
+    private List<CustomerEntity> customers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "credit")
-    private List<ProductEntity> products= new ArrayList<>();
-
+    private List<ProductEntity> products = new ArrayList<>();
+    @ManyToOne
+    private CreditProductEntiti creditProduct;
+    private Long value;
+    private Long allValue;
+    private int monthsOfReplayment;
+    @ManyToOne
+    private TypesReplaymentEntiti typesReplayment;
+    private Date creatingDate;
+    private Date lastRateDate;
+    private int valueNestRate;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "creditEntity")
+    private List<RepaymentsEntiti> repaymentsEntitis = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -68,5 +78,77 @@ public class CreditEntity implements Serializable {
 
     public void setProducts(List<ProductEntity> products) {
         this.products = products;
+    }
+
+    public CreditProductEntiti getCreditProduct() {
+        return creditProduct;
+    }
+
+    public void setCreditProduct(CreditProductEntiti creditProduct) {
+        this.creditProduct = creditProduct;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+
+    public Long getAllValue() {
+        return allValue;
+    }
+
+    public void setAllValue(Long allValue) {
+        this.allValue = allValue;
+    }
+
+    public int getMonthsOfReplayment() {
+        return monthsOfReplayment;
+    }
+
+    public void setMonthsOfReplayment(int monthsOfReplayment) {
+        this.monthsOfReplayment = monthsOfReplayment;
+    }
+
+    public TypesReplaymentEntiti getTypesReplayment() {
+        return typesReplayment;
+    }
+
+    public void setTypesReplayment(TypesReplaymentEntiti typesReplayment) {
+        this.typesReplayment = typesReplayment;
+    }
+
+    public Date getCreatingDate() {
+        return creatingDate;
+    }
+
+    public void setCreatingDate(Date creatingDate) {
+        this.creatingDate = creatingDate;
+    }
+
+    public Date getLastRateDate() {
+        return lastRateDate;
+    }
+
+    public void setLastRateDate(Date lastRateDate) {
+        this.lastRateDate = lastRateDate;
+    }
+
+    public int getValueNestRate() {
+        return valueNestRate;
+    }
+
+    public void setValueNestRate(int valueNestRate) {
+        this.valueNestRate = valueNestRate;
+    }
+
+    public List<RepaymentsEntiti> getRepaymentsEntitis() {
+        return repaymentsEntitis;
+    }
+
+    public void setRepaymentsEntitis(List<RepaymentsEntiti> repaymentsEntitis) {
+        this.repaymentsEntitis = repaymentsEntitis;
     }
 }

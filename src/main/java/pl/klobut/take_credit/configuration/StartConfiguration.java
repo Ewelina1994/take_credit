@@ -10,6 +10,8 @@ import pl.klobut.take_credit.repository.CreditRepo;
 import pl.klobut.take_credit.repository.CustomerRepo;
 import pl.klobut.take_credit.repository.ProductRepo;
 
+import java.util.List;
+
 @Configuration
 public class StartConfiguration {
 
@@ -49,19 +51,19 @@ public class StartConfiguration {
                     .firstname("Artur")
                     .surname("Kowal")
                     .pesel("91020575600")
-                    .credit(creditEntityOne)
+                    .credits((List<CreditEntity>)creditEntityOne)
                     .build());
             customerRepo.saveAndFlush(CustomerEntity.builder()
                     .firstname("Julia")
                     .surname("Kowal")
                     .pesel("94050345600")
-                    .credit(creditEntityOne)
+                    .credits((List<CreditEntity>)creditEntityOne)
                     .build());
             customerRepo.saveAndFlush(CustomerEntity.builder()
                     .firstname("Jan")
                     .surname("Mak")
                     .pesel("88050345600")
-                    .credit(creditEntityTwo)
+                    .credits((List<CreditEntity>)creditEntityTwo)
                     .build());
 
         };

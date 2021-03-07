@@ -32,11 +32,11 @@ public class CustomerService {
         return customerList;
     }
 
-    public List<CustomerEntity> addNewCustomers(List<Customer> customers, CreditEntity creditId) {
+    public List<CustomerEntity> addNewCustomers(List<Customer> customers, List<CreditEntity> creditId) {
         List<CustomerEntity> customerEntityList = new ArrayList<>();
         customers.stream().forEach(customer -> {
             CustomerEntity entiti = customerMapper.toEntity(customer);
-            entiti.setCredit(creditId);
+            entiti.setCreditId(creditId);
             customerEntityList.add(entiti);
         });
         return customerRepo.saveAll(customerEntityList);

@@ -1,16 +1,15 @@
 package pl.klobut.take_credit.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import pl.klobut.take_credit.domain.entities.CreditEntity;
 import pl.klobut.take_credit.validators.ValidPESEL;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -21,10 +20,8 @@ public class CustomerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "credit_id")
-    private CreditEntity credit;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customers")
+    private List<CreditEntity> creditId;
     @NotNull
     private String firstname;
     @NotNull
@@ -42,12 +39,12 @@ public class CustomerEntity implements Serializable {
         this.id = id;
     }
 
-    public CreditEntity getCredit() {
-        return credit;
+    public List<CreditEntity> getCreditId() {
+        return creditId;
     }
 
-    public void setCredit(CreditEntity credit) {
-        this.credit = credit;
+    public void setCreditId(List<CreditEntity> creditId) {
+        this.creditId = creditId;
     }
 
     public String getFirstname() {
